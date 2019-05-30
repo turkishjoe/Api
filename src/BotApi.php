@@ -1680,7 +1680,7 @@ class BotApi
      *
      * @return BotApi
      */
-    public function setProxy($proxyString = '')
+    public function setProxy($proxyString = '', $proxyAuth = null, $proxyType = CURLPROXY_HTTP)
     {
         if (empty($proxyString)) {
             $this->proxySettings = [];
@@ -1689,8 +1689,13 @@ class BotApi
 
         $this->proxySettings = [
             CURLOPT_PROXY => $proxyString,
-            CURLOPT_HTTPPROXYTUNNEL => true,
+            CURLOPT_PROXYTYPE=>$proxyType,
         ];
+
+        if(!is_null($proxyAuth)){
+            $this->proxySettings[CURLOPT_PROXYUSERPWD] = $proxyAuth;
+        }
+
         return $this;
     }
 
